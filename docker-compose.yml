@@ -30,6 +30,7 @@ services:
   timescaledb:
     image: timescale/pg_prometheus:latest-pg10
     container_name: timescaledb
+    restart: always
     volumes:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
