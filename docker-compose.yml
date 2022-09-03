@@ -48,6 +48,8 @@ services:
     image: timescale/timescaledb-ha:pg14-latest
     container_name: timescaledb
     restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
