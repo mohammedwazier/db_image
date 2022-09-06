@@ -9,5 +9,7 @@ $ postgresql (TimescaleDB)
 $ redis
 
 How to Use:
+$ cp .env.example .env
+$ echo "FILL THE ENV VARIABLES!"
 $ docker-compose up --build -d
 ```
