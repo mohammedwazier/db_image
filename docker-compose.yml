@@ -1,21 +1,4 @@
 version: "3.8"
-x-minio-common: &minio-common
-  image: quay.io/minio/minio:RELEASE.2022-08-13T21-54-44Z
-  command: server --console-address ":9001" http://minio{1...4}/data{1...2}
-  # restart: always
-  environment:
-    - MINIO_ROOT_USER=wazier
-    - MINIO_ROOT_PASSWORD=wazier
-  expose:
-    - "9000"
-    - "9001"
-  healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-    interval: 30s
-    timeout: 20s
-    retries: 3
-  networks:
-    localnetworks:
 
 services:
   mysql_service:
@@ -30,12 +13,14 @@ services:
     expose:
       - 3306
     environment:
-      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE_DEFAULT}
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping"]
       interval: 10s
       timeout: 2s
       retries: 10
+
   redis_db_service:
     image: redis
     hostname: redis_db_service
@@ -45,80 +30,64 @@ services:
     expose:
       - 6379
     container_name: redis_db_service
+
   timescaledb:
+    hostname: timescaledb
     # image: timescale/pg_prometheus:latest-pg10
     image: timescale/timescaledb-ha:pg14-latest
     container_name: timescaledb
     restart: always
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
     ports:
       - 5432:5432/tcp
-    hostname: timescaledb
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
-  minio1:
-    <<: *minio-common
-    hostname: minio1
-    volumes:
-      - data1-1:/data1
-      - data1-2:/data2
-
-  minio2:
-    <<: *minio-common
-    hostname: minio2
-    volumes:
-      - data2-1:/data1
-      - data2-2:/data2
-
-  minio3:
-    <<: *minio-common
-    hostname: minio3
-    volumes:
-      - data3-1:/data1
-      - data3-2:/data2
-
-  minio4:
-    <<: *minio-common
-    hostname: minio4
-    volumes:
-      - data4-1:/data1
-      - data4-2:/data2
-    environment:
-      TIMESCALEDB_TELEMETRY: "off"
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-  nginx:
-    image: nginx:1.19.2-alpine
-    container_name: nginx_service
-    hostname: nginx
-    restart: unless-stopped
-    networks:
-      localnetworks:
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
+  grafana:
+    hostname: grafana
+    image: grafana/grafana
     ports:
-      - "9000:9000"
-      - "9001:9001"
-    depends_on:
-      - minio1
-      - minio2
-      - minio3
-      - minio4
-      - mysql_service
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
 
-networks:
-  localnetworks:
-    driver: bridge
+  prometheus:
+    hostname: prometheus
+    image: prom/prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus:ro
+
+  prom_mysql_exporter:
+    image: prom/mysqld-exporter
+    links:
+      - mysql_service
+      - prometheus
+    ports:
+      - "9104:9104"
+    environment:
+      DATA_SOURCE_NAME: root:${MYSQL_ROOT_PASSWORD}@(mysql_service:3306)/
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:${POSTGRES_PASSWORD}@timescaledb:5432/?sslmode=disable"
+    links:
+      - timescaledb
+      - prometheus
+
 volumes:
-  data1-1:
-  data1-2:
-  data2-1:
-  data2-2:
-  data3-1:
-  data3-2:
-  data4-1:
-  data4-2:
+  grafana_data: {}
+  prometheus-data:
