@@ -56,6 +56,7 @@ services:
   grafana:
     hostname: grafana
     image: grafana/grafana
+    restart: always
     ports:
       - 3000:3000
     volumes:
@@ -72,6 +73,7 @@ services:
 
   prom_mysql_exporter:
     image: prom/mysqld-exporter
+    restart: always
     links:
       - mysql_service
       - prometheus
@@ -82,6 +84,7 @@ services:
 
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter
+    restart: always
     ports:
       - 9187:9187
     environment:
