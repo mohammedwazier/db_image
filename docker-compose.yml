@@ -51,19 +51,15 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+    networks:
+      - localNetworks
   pgbouncer:
-    image: edoburu/pgbouncer
-    environment:
-      - DB_USER=postgres
-      - DB_PASSWORD=${POSTGRES_DB}
-      - DB_HOST=timescale
-      - DB_NAME=${POSTGRES_DB}
-      - POOL_MODE=transaction
-      - ADMIN_USERS=postgres
+    image: docker.io/bitnami/pgbouncer:1
     ports:
-      - "5432:5432"
-    depends_on:
-      - timescaledb
+      - 6432:6432
+    environment:
+      - POSTGRESQL_HOST=timescaledb
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
 
   grafana:
     hostname: grafana
@@ -108,3 +104,6 @@ services:
 volumes:
   grafana_data: {}
   prometheus-data:
+networks:
+  localNetworks:
+    driver: bridge
