@@ -37,7 +37,6 @@ services:
     hostname: timescaledb
     # image: timescale/pg_prometheus:latest-pg10
     image: timescale/timescaledb-ha:pg14-latest
-    container_name: timescaledb
     restart: always
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -45,13 +44,26 @@ services:
     volumes:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
-    ports:
-      - 5432:5432/tcp
+    # ports:
+    #   - 5432:5432/tcp
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"]
       interval: 10s
       timeout: 3s
       retries: 3
+  pgbouncer:
+    image: edoburu/pgbouncer
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=${POSTGRES_DB}
+      - DB_HOST=timescale
+      - DB_NAME=${POSTGRES_DB}
+      - POOL_MODE=transaction
+      - ADMIN_USERS=postgres
+    ports:
+      - "5432:5432"
+    depends_on:
+      - timescaledb
 
   grafana:
     hostname: grafana
