@@ -51,8 +51,8 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
-    networks:
-      - localNetworks
+    # networks:
+    #   - localNetworks
   pgbouncer:
     image: docker.io/bitnami/pgbouncer:1
     ports:
@@ -104,6 +104,6 @@ services:
 volumes:
   grafana_data: {}
   prometheus-data:
-networks:
-  localNetworks:
-    driver: bridge
+# networks:
+#   localNetworks:
+#     driver: bridge
