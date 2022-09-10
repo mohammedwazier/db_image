@@ -118,6 +118,7 @@ services:
     links:
       - timescaledb
       - prometheus
+
   minio1:
     <<: *minio-common
     hostname: minio1
@@ -157,6 +158,11 @@ services:
       # - 3306:3306
       - "9000:9000"
       - "9001:9001"
+    links:
+      - minio1
+      - minio2
+      - minio3
+      - minio4
     depends_on:
       - minio1
       - minio2
