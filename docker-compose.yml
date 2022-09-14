@@ -2,7 +2,8 @@ version: "3.7"
 
 x-minio-common: &minio-common
   image: quay.io/minio/minio:RELEASE.2022-09-07T22-25-02Z
-  command: server --console-address ":9001" http://minio{1...4}/data{1...2}
+  command: server --console-address ":9001" http://minio{1...2}/data{1...2}
+  restart: unless-stopped
   expose:
     - "9000"
     - "9001"
@@ -146,19 +147,19 @@ services:
       - data2-1:/data1
       - data2-2:/data2
 
-  minio3:
-    <<: *minio-common
-    hostname: minio3
-    volumes:
-      - data3-1:/data1
-      - data3-2:/data2
+  # minio3:
+  #   <<: *minio-common
+  #   hostname: minio3
+  #   volumes:
+  #     - data3-1:/data1
+  #     - data3-2:/data2
 
-  minio4:
-    <<: *minio-common
-    hostname: minio4
-    volumes:
-      - data4-1:/data1
-      - data4-2:/data2
+  # minio4:
+  #   <<: *minio-common
+  #   hostname: minio4
+  #   volumes:
+  #     - data4-1:/data1
+  #     - data4-2:/data2
   nginx:
     image: nginx:1.19.2-alpine
     hostname: nginx
@@ -174,23 +175,23 @@ services:
     links:
       - minio1
       - minio2
-      - minio3
-      - minio4
+      # - minio3
+      # - minio4
     depends_on:
       - minio1
       - minio2
-      - minio3
-      - minio4
+      # - minio3
+      # - minio4
 
 volumes:
   data1-1:
   data1-2:
   data2-1:
   data2-2:
-  data3-1:
-  data3-2:
-  data4-1:
-  data4-2:
+  # data3-1:
+  # data3-2:
+  # data4-1:
+  # data4-2:
   grafana_data: {}
   prometheus-data:
 # networks:
