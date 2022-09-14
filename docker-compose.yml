@@ -68,8 +68,8 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
-    # networks:
-    #   - localNetworks
+    networks:
+      - localNetworks
   pgbouncer:
     image: docker.io/bitnami/pgbouncer:1
     ports:
@@ -78,6 +78,8 @@ services:
       - POSTGRESQL_HOST=timescaledb
       - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRESQL_DATABASE=${POSTGRES_DB}
+    networks:
+      - localNetworks
 
   # pgbouncer:
   #   image: edoburu/pgbouncer
@@ -194,6 +196,6 @@ volumes:
   # data4-2:
   grafana_data: {}
   prometheus-data:
-# networks:
-#   localNetworks:
-#     driver: bridge
+networks:
+  localNetworks:
+    driver: bridge
