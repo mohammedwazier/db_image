@@ -174,13 +174,13 @@ services:
     links:
       - minio1
       - minio2
-      - minio3
-      - minio4
+      # - minio3
+      # - minio4
     depends_on:
       - minio1
       - minio2
-      - minio3
-      - minio4
+      # - minio3
+      # - minio4
 
 volumes:
   data1-1:
