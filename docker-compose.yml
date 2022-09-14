@@ -2,7 +2,7 @@ version: "3.7"
 
 x-minio-common: &minio-common
   image: quay.io/minio/minio:RELEASE.2022-09-07T22-25-02Z
-  command: server --console-address ":9001" http://minio{1...4}/data{1...2}
+  command: server --console-address ":9001" http://minio{1...2}/data{1...2}
   expose:
     - "9000"
     - "9001"
@@ -69,14 +69,28 @@ services:
       retries: 3
     # networks:
     #   - localNetworks
+  # pgbouncer:
+  #   image: docker.io/bitnami/pgbouncer:1
+  #   ports:
+  #     - 6432:6432
+  #   environment:
+  #     - POSTGRESQL_HOST=timescaledb
+  #     - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+  #     - POSTGRESQL_DATABASE=${POSTGRES_DB}
+
   pgbouncer:
-    image: docker.io/bitnami/pgbouncer:1
-    ports:
-      - 6432:6432
+    image: edoburu/pgbouncer
     environment:
-      - POSTGRESQL_HOST=timescaledb
-      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRESQL_DATABASE=${POSTGRES_DB}
+      - DB_USER=postgres
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_HOST=timescaledb
+      - DB_NAME=
+      - POOL_MODE=transaction
+      - ADMIN_USERS=postgres,dbuser
+    ports:
+      - "5432:5432"
+    depends_on:
+      - db
 
   grafana:
     hostname: grafana
@@ -132,19 +146,19 @@ services:
       - data2-1:/data1
       - data2-2:/data2
 
-  minio3:
-    <<: *minio-common
-    hostname: minio3
-    volumes:
-      - data3-1:/data1
-      - data3-2:/data2
+  # minio3:
+  #   <<: *minio-common
+  #   hostname: minio3
+  #   volumes:
+  #     - data3-1:/data1
+  #     - data3-2:/data2
 
-  minio4:
-    <<: *minio-common
-    hostname: minio4
-    volumes:
-      - data4-1:/data1
-      - data4-2:/data2
+  # minio4:
+  #   <<: *minio-common
+  #   hostname: minio4
+  #   volumes:
+  #     - data4-1:/data1
+  #     - data4-2:/data2
   nginx:
     image: nginx:1.19.2-alpine
     hostname: nginx
@@ -173,10 +187,10 @@ volumes:
   data1-2:
   data2-1:
   data2-2:
-  data3-1:
-  data3-2:
-  data4-1:
-  data4-2:
+  # data3-1:
+  # data3-2:
+  # data4-1:
+  # data4-2:
   grafana_data: {}
   prometheus-data:
 # networks:
