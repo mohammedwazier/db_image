@@ -90,7 +90,7 @@ services:
     ports:
       - "5432:5432"
     depends_on:
-      - db
+      - timescaledb
 
   grafana:
     hostname: grafana
