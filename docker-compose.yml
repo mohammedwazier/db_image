@@ -95,45 +95,45 @@ services:
   #   depends_on:
   #     - timescaledb
 
-  grafana:
-    hostname: grafana
-    image: grafana/grafana
-    restart: always
-    ports:
-      - 3000:3000
-    volumes:
-      - grafana_data:/var/lib/grafana
+  # grafana:
+  #   hostname: grafana
+  #   image: grafana/grafana
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - grafana_data:/var/lib/grafana
 
-  prometheus:
-    hostname: prometheus
-    image: prom/prometheus
-    restart: always
-    ports:
-      - 9090:9090
-    volumes:
-      - ./prometheus:/etc/prometheus:ro
+  # prometheus:
+  #   hostname: prometheus
+  #   image: prom/prometheus
+  #   restart: always
+  #   ports:
+  #     - 9090:9090
+  #   volumes:
+  #     - ./prometheus:/etc/prometheus:ro
 
-  prom_mysql_exporter:
-    image: prom/mysqld-exporter
-    restart: always
-    links:
-      - mysql_service
-      - prometheus
-    ports:
-      - "9104:9104"
-    environment:
-      DATA_SOURCE_NAME: root:${MYSQL_ROOT_PASSWORD}@(mysql_service:3306)/
+  # prom_mysql_exporter:
+  #   image: prom/mysqld-exporter
+  #   restart: always
+  #   links:
+  #     - mysql_service
+  #     - prometheus
+  #   ports:
+  #     - "9104:9104"
+  #   environment:
+  #     DATA_SOURCE_NAME: root:${MYSQL_ROOT_PASSWORD}@(mysql_service:3306)/
 
-  postgres-exporter:
-    image: prometheuscommunity/postgres-exporter
-    restart: always
-    ports:
-      - 9187:9187
-    environment:
-      DATA_SOURCE_NAME: "postgresql://postgres:${POSTGRES_PASSWORD}@timescaledb:5432/?sslmode=disable"
-    links:
-      - timescaledb
-      - prometheus
+  # postgres-exporter:
+  #   image: prometheuscommunity/postgres-exporter
+  #   restart: always
+  #   ports:
+  #     - 9187:9187
+  #   environment:
+  #     DATA_SOURCE_NAME: "postgresql://postgres:${POSTGRES_PASSWORD}@timescaledb:5432/?sslmode=disable"
+  #   links:
+  #     - timescaledb
+  #     - prometheus
 
   minio1:
     <<: *minio-common
