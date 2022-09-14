@@ -61,8 +61,8 @@ services:
     volumes:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
-    # ports:
-    #   - 5432:5432/tcp
+    ports:
+      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"]
       interval: 10s
@@ -70,28 +70,28 @@ services:
       retries: 3
     # networks:
     #   - localNetworks
-  # pgbouncer:
-  #   image: docker.io/bitnami/pgbouncer:1
-  #   ports:
-  #     - 6432:6432
-  #   environment:
-  #     - POSTGRESQL_HOST=timescaledb
-  #     - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
-  #     - POSTGRESQL_DATABASE=${POSTGRES_DB}
-
   pgbouncer:
-    image: edoburu/pgbouncer
-    environment:
-      - DB_USER=postgres
-      - DB_PASSWORD=${POSTGRES_PASSWORD}
-      - DB_HOST=timescaledb
-      - DB_NAME=
-      - POOL_MODE=transaction
-      - ADMIN_USERS=postgres,dbuser
+    image: docker.io/bitnami/pgbouncer:1
     ports:
-      - "5432:5432"
-    depends_on:
-      - timescaledb
+      - 6432:6432
+    environment:
+      - POSTGRESQL_HOST=timescaledb
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRESQL_DATABASE=${POSTGRES_DB}
+
+  # pgbouncer:
+  #   image: edoburu/pgbouncer
+  #   environment:
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=${POSTGRES_PASSWORD}
+  #     - DB_HOST=timescaledb
+  #     - DB_NAME=
+  #     - POOL_MODE=transaction
+  #     - ADMIN_USERS=postgres,dbuser
+  #   ports:
+  #     - "6432:5432"
+  #   depends_on:
+  #     - timescaledb
 
   grafana:
     hostname: grafana
