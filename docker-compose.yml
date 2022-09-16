@@ -142,12 +142,12 @@ services:
       - data1-1:/data1
       - data1-2:/data2
 
-  # minio2:
-  #   <<: *minio-common
-  #   hostname: minio2
-  #   volumes:
-  #     - data2-1:/data1
-  #     - data2-2:/data2
+  minio2:
+    <<: *minio-common
+    hostname: minio2
+    volumes:
+      - data2-1:/data1
+      - data2-2:/data2
 
   # minio3:
   #   <<: *minio-common
