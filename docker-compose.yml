@@ -188,7 +188,7 @@ services:
     restart: unless-stopped
     environment:
       - MAIN_HOST=${MAIN_HOST}
-    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.temp > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon on;'"
+    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.temp > /etc/nginx/nginx.conf && exec nginx -g 'daemon on;'"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.temp:ro
       - ./nginx/sites-enabled/portainer.conf:/etc/nginx/sites-enabled/portainer.conf:ro
