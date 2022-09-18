@@ -60,8 +60,6 @@ services:
       - 9010:9000
     expose:
       - 9010
-    networks:
-      - localnetworks
 
   redis_db_service:
     image: redis
