@@ -36,15 +36,27 @@ services:
       timeout: 2s
       retries: 10
 
-  adminer:
-    image: adminer
-    restart: always
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - mysql_service
+  #   links:
+  #     - mysql_service
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ./portainer-data:/data
     ports:
-      - 8080:8080
-    depends_on:
-      - mysql_service
-    links:
-      - mysql_service
+      - 9010:9000
 
   redis_db_service:
     image: redis
