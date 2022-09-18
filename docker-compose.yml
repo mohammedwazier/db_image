@@ -55,7 +55,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ./portainer-data:/data
+      - portainer-data:/data
     ports:
       - 9010:9000
 
@@ -216,6 +216,7 @@ volumes:
   data1-2:
   data2-1:
   data2-2:
+  portainer-data:
   # data3-1:
   # data3-2:
   # data4-1:
