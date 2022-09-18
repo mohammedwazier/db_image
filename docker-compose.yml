@@ -183,7 +183,7 @@ services:
   #     - data4-1:/data1
   #     - data4-2:/data2
   nginx:
-    image: nginx:1.19.2-alpine
+    image: nginx:1.22.0-perl
     hostname: nginx
     restart: unless-stopped
     environment:
