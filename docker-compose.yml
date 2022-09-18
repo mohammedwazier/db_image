@@ -183,11 +183,12 @@ services:
   #     - data4-1:/data1
   #     - data4-2:/data2
   nginx:
-    image: nginx:1.22.0-perl
+    image: nginx:1.22.0-alpine
     hostname: nginx
     restart: unless-stopped
     environment:
       - MAIN_HOST=${MAIN_HOST}
+    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.temp > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon on;'"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/sites-enabled/portainer.conf:/etc/nginx/sites-enabled/portainer.conf:ro
