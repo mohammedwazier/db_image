@@ -19,7 +19,7 @@ services:
       - NGINX_HOST=${MAIN_HOST}
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     volumes:
-      - ./nginx/portainer:/etc/nginx/templates
+      - ./nginx/portainer:/etc/nginx/portainer
     ports:
       - 80:80
     links:
