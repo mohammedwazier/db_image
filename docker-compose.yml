@@ -187,12 +187,10 @@ services:
     hostname: nginx
     restart: unless-stopped
     environment:
-      - MAIN_HOST=${MAIN_HOST}
-    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/nginx.temp > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon on;'"
+      - NGINX_HOST=${MAIN_HOST}
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/sites-enabled/portainer.conf:/etc/nginx/sites-enabled/portainer.conf:ro
-      - ./nginx/nginx.temp:/etc/nginx/conf.d/nginx.temp
     ports:
       - 80:80
       - 9000:9000

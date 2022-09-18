@@ -1,2 +1,2 @@
 [nginx]
-main_host = $MAIN_HOST
+set  $MAIN_HOST
