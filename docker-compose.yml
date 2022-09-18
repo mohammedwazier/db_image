@@ -36,26 +36,18 @@ services:
       timeout: 2s
       retries: 10
 
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - mysql_service
-  #   links:
-  #     - mysql_service
-
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer-data:/data
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - mysql_service
+    links:
+      - mysql_service
+    environment:
+      PMA_HOST: mysql_service
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
 
   redis_db_service:
     image: redis
@@ -71,7 +63,6 @@ services:
 
   timescaledb:
     hostname: timescaledb
-    # image: timescale/pg_prometheus:latest-pg10
     image: timescale/timescaledb-ha:pg14-latest
     restart: always
     environment:
@@ -81,8 +72,6 @@ services:
     volumes:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
-    # ports:
-    #   - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"]
       interval: 10s
@@ -101,60 +90,6 @@ services:
     networks:
       - localnetworks
 
-  # pgbouncer:
-  #   image: edoburu/pgbouncer
-  #   environment:
-  #     - DB_USER=postgres
-  #     - DB_PASSWORD=${POSTGRES_PASSWORD}
-  #     - DB_HOST=timescaledb
-  #     - DB_NAME=
-  #     - POOL_MODE=transaction
-  #     - ADMIN_USERS=postgres,dbuser
-  #   ports:
-  #     - "6432:5432"
-  #   depends_on:
-  #     - timescaledb
-
-  # grafana:
-  #   hostname: grafana
-  #   image: grafana/grafana
-  #   restart: always
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - grafana_data:/var/lib/grafana
-
-  # prometheus:
-  #   hostname: prometheus
-  #   image: prom/prometheus
-  #   restart: always
-  #   ports:
-  #     - 9090:9090
-  #   volumes:
-  #     - ./prometheus:/etc/prometheus:ro
-
-  # prom_mysql_exporter:
-  #   image: prom/mysqld-exporter
-  #   restart: always
-  #   links:
-  #     - mysql_service
-  #     - prometheus
-  #   ports:
-  #     - "9104:9104"
-  #   environment:
-  #     DATA_SOURCE_NAME: root:${MYSQL_ROOT_PASSWORD}@(mysql_service:3306)/
-
-  # postgres-exporter:
-  #   image: prometheuscommunity/postgres-exporter
-  #   restart: always
-  #   ports:
-  #     - 9187:9187
-  #   environment:
-  #     DATA_SOURCE_NAME: "postgresql://postgres:${POSTGRES_PASSWORD}@timescaledb:5432/?sslmode=disable"
-  #   links:
-  #     - timescaledb
-  #     - prometheus
-
   minio1:
     <<: *minio-common
     hostname: minio1
@@ -169,19 +104,19 @@ services:
       - data2-1:/data1
       - data2-2:/data2
 
-  # minio3:
-  #   <<: *minio-common
-  #   hostname: minio3
-  #   volumes:
-  #     - data3-1:/data1
-  #     - data3-2:/data2
+  minio3:
+    <<: *minio-common
+    hostname: minio3
+    volumes:
+      - data3-1:/data1
+      - data3-2:/data2
 
-  # minio4:
-  #   <<: *minio-common
-  #   hostname: minio4
-  #   volumes:
-  #     - data4-1:/data1
-  #     - data4-2:/data2
+  minio4:
+    <<: *minio-common
+    hostname: minio4
+    volumes:
+      - data4-1:/data1
+      - data4-2:/data2
   nginx:
     image: nginx:1.22.0-alpine
     hostname: nginx
@@ -191,8 +126,6 @@ services:
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     volumes:
       - ./nginx/template:/etc/nginx/templates
-      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # - ./nginx/sites-enabled/portainer.conf:/etc/nginx/sites-enabled/portainer.conf:ro
     ports:
       - 80:80
       - 9000:9000
@@ -204,28 +137,23 @@ services:
     links:
       - minio1
       - minio2
-      - portainer
-      # - minio3
-      # - minio4
+      - minio3
+      - minio4
     depends_on:
       - minio1
       - minio2
-      - portainer
-      # - minio3
-      # - minio4
+      - minio3
+      - minio4
 
 volumes:
   data1-1:
   data1-2:
   data2-1:
   data2-2:
-  portainer-data:
-  # data3-1:
-  # data3-2:
-  # data4-1:
-  # data4-2:
-  grafana_data: {}
-  prometheus-data:
+  data3-1:
+  data3-2:
+  data4-1:
+  data4-2:
 networks:
   localnetworks:
     driver: bridge

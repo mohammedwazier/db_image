@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer-data:/data
+  nginx:
+    image: nginx:1.22.0-alpine
+    hostname: nginx
+    restart: unless-stopped
+    environment:
+      - NGINX_HOST=${MAIN_HOST}
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+    volumes:
+      - ./nginx/portainer:/etc/nginx/templates
+    ports:
+      - 80:80
+    links:
+      - portainer
+    depends_on:
+      - portainer
