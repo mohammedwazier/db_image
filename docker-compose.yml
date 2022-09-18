@@ -146,8 +146,6 @@ services:
       - ./nginx/template:/etc/nginx/templates
     ports:
       - 80:80
-      - 9000:9000
-      - 9001:9001
     expose:
       - 80
     links:
