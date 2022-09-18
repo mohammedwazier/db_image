@@ -58,8 +58,8 @@ services:
       - portainer-data:/data
     ports:
       - 9010:9000
-    expose:
-      - 9010
+    networks:
+      - localnetworks
 
   redis_db_service:
     image: redis
@@ -212,6 +212,8 @@ services:
       - portainer
       # - minio3
       # - minio4
+    networks:
+      - localnetworks
 
 volumes:
   data1-1:
