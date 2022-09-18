@@ -56,10 +56,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer-data:/data
-    ports:
-      - 9010:9000
-    expose:
-      - 9010
 
   redis_db_service:
     image: redis
