@@ -1,2 +1,0 @@
-[nginx]
-set  $MAIN_HOST
