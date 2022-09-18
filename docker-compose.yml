@@ -186,6 +186,8 @@ services:
     image: nginx:1.19.2-alpine
     hostname: nginx
     restart: unless-stopped
+    environment:
+      - MAIN_HOST=${MAIN_HOST}
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/sites-enabled/portainer.conf:/etc/nginx/sites-enabled/portainer.conf:ro
