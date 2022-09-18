@@ -1,5 +1,4 @@
 version: "3.7"
-
 x-minio-common: &minio-common
   image: quay.io/minio/minio:RELEASE.2022-09-07T22-25-02Z
   command: server --console-address ":9001" http://minio{1...2}/data{1...2}
@@ -38,7 +37,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    hostname: phpmyadmin
     depends_on:
       - mysql_service
     links:
@@ -77,8 +76,6 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
-    networks:
-      - localnetworks
   pgbouncer:
     image: docker.io/bitnami/pgbouncer:1
     ports:
@@ -87,8 +84,31 @@ services:
       - POSTGRESQL_HOST=timescaledb
       - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRESQL_DATABASE=${POSTGRES_DB}
-    networks:
-      - localnetworks
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer-data:/data
+
+  # pgbouncer:
+  #   image: edoburu/pgbouncer
+  #   environment:
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=${POSTGRES_PASSWORD}
+  #     - DB_HOST=timescaledb
+  #     - DB_NAME=
+  #     - POOL_MODE=transaction
+  #     - ADMIN_USERS=postgres,dbuser
+  #   ports:
+  #     - "6432:5432"
+  #   depends_on:
+  #     - timescaledb
 
   minio1:
     <<: *minio-common
@@ -132,16 +152,16 @@ services:
       - 9001:9001
     expose:
       - 80
-    #   - 9000
-    #   - 9001
     links:
       - minio1
       - minio2
+      - portainer
       - minio3
       - minio4
     depends_on:
       - minio1
       - minio2
+      - portainer
       - minio3
       - minio4
 
@@ -150,10 +170,13 @@ volumes:
   data1-2:
   data2-1:
   data2-2:
+  portainer-data:
   data3-1:
   data3-2:
   data4-1:
   data4-2:
-networks:
-  localnetworks:
-    driver: bridge
+  grafana_data: {}
+  prometheus-data:
+# networks:
+#   localnetworks:
+#     driver: bridge
