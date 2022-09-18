@@ -48,6 +48,7 @@ services:
 
   portainer:
     image: portainer/portainer-ce:latest
+    container_name: portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -189,7 +190,9 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites-enabled/portainer.conf:/etc/nginx/sites-enabled/portainer.conf:ro
     ports:
+      - 80:80
       - 9000:9000
       - 9001:9001
     # expose:
@@ -197,12 +200,14 @@ services:
     #   - 9001
     links:
       - minio1
-      # - minio2
+      - minio2
+      - portainer
       # - minio3
       # - minio4
     depends_on:
       - minio1
-      # - minio2
+      - minio2
+      - portainer
       # - minio3
       # - minio4
 
