@@ -58,6 +58,8 @@ services:
       - portainer-data:/data
     ports:
       - 9010:9000
+    expose:
+      - 9010
 
   redis_db_service:
     image: redis
