@@ -1,4 +1,5 @@
-server {
+http {
+    server {
         listen 80;
         listen [::]:80;
         server_name  portainer.${NGINX_HOST} www.portainer.${NGINX_HOST};
@@ -24,3 +25,4 @@ server {
             proxy_pass http://portainer:9000;
         }
     }
+}
