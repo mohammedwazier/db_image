@@ -186,6 +186,7 @@ services:
     image: nginx:1.19.2-alpine
     hostname: nginx
     restart: unless-stopped
+    command: ./run_nginx.sh
     environment:
       - MAIN_HOST=${MAIN_HOST}
     volumes:
