@@ -158,7 +158,7 @@ http {
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "Upgrade";
             
-            proxy_pass phpmyadmin;
+            proxy_pass http://phpmyadmin;
         }
     }
 }
