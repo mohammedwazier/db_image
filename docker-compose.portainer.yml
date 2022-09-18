@@ -26,3 +26,6 @@ services:
       - portainer
     depends_on:
       - portainer
+
+volumes:
+  portainer-data:
