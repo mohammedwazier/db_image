@@ -11,7 +11,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer-data:/data
-  nginx:
+  nginx_portainer:
     image: nginx:1.22.0-alpine
     hostname: nginx
     restart: unless-stopped
