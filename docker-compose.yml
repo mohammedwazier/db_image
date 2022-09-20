@@ -94,20 +94,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer-data:/data
 
-  # pgbouncer:
-  #   image: edoburu/pgbouncer
-  #   environment:
-  #     - DB_USER=postgres
-  #     - DB_PASSWORD=${POSTGRES_PASSWORD}
-  #     - DB_HOST=timescaledb
-  #     - DB_NAME=
-  #     - POOL_MODE=transaction
-  #     - ADMIN_USERS=postgres,dbuser
-  #   ports:
-  #     - "6432:5432"
-  #   depends_on:
-  #     - timescaledb
-
   minio1:
     <<: *minio-common
     hostname: minio1
@@ -146,30 +132,78 @@ services:
       - ./nginx/template:/etc/nginx/templates
     ports:
       - 80:80
-    expose:
-      - 80
+      - 443:443
+      - 25:25
+      - 143:143
+      - 465:465
+      - 587:587
+      - 993:993
     links:
       - minio1
       - minio2
       - portainer
-      # - minio3
-      # - minio4
     depends_on:
       - minio1
       - minio2
       - portainer
-      # - minio3
-      # - minio4
 
+  # mailserver:
+  #   image: docker.io/mailserver/docker-mailserver:latest
+  #   container_name: mailserver
+  #   # If the FQDN for your mail-server is only two labels (eg: example.com),
+  #   # you can assign this entirely to `hostname` and remove `domainname`.
+  #   hostname: mail
+  #   # domainname: localhost
+  #   env_file: mailserver.env
+  #   # More information about the mail-server ports:
+  #   # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
+  #   # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+  #   ports:
+  #     - "25:25" # SMTP  (explicit TLS => STARTTLS)
+  #     - "143:143" # IMAP4 (explicit TLS => STARTTLS)
+  #     - "465:465" # ESMTP (implicit TLS)
+  #     - "587:587" # ESMTP (explicit TLS => STARTTLS)
+  #     - "993:993" # IMAP4 (implicit TLS)
+  #   volumes:
+  #     - ./docker-data/dms/mail-data/:/var/mail/
+  #     - ./docker-data/dms/mail-state/:/var/mail-state/
+  #     - ./docker-data/dms/mail-logs/:/var/log/mail/
+  #     - ./docker-data/dms/config/:/tmp/docker-mailserver/
+  #     - /etc/localtime:/etc/localtime:ro
+  #   restart: always
+  #   stop_grace_period: 1m
+  #   cap_add:
+  #     - NET_ADMIN
+  #   healthcheck:
+  #     test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
+  #     timeout: 3s
+  #     retries: 0
+
+  core:
+    image: adaline/dockermail-core
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+    volumes:
+      - ./opt/dockermail/settings:/mail_settings
+      - ./opt/dockermail/mail:/vmail
+    links:
+      - opendkim
+      - amavis
+  opendkim:
+    image: adaline/dockermail-opendkim
+    volumes:
+      - ./opt/dockermail/settings:/mail_settings
+  amavis:
+    image: adaline/dockermail-amavis
+    volumes:
+      - ./opt/dockermail/settings:/mail_settings
 volumes:
   data1-1:
   data1-2:
   data2-1:
   data2-2:
-  # data3-1:
-  # data3-2:
-  # data4-1:
-  # data4-2:
   portainer-data:
 # networks:
 #   localnetworks:
