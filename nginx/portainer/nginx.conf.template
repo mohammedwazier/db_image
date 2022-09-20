@@ -8,6 +8,13 @@ events {
     worker_connections  4096;
 }
 
+stream{
+    server{
+        listen 25;
+        proxy_pass core:25;
+    }
+}
+
 http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
