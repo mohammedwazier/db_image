@@ -129,15 +129,6 @@ services:
       - minio1
       - minio2
       - portainer
-
-  mailslurper:
-    image: marcopas/docker-mailslurper
-    volumes:
-      - ./mailslurper.json:/opt/mailslurper/config.json
-    ports:
-      - 2500:2500
-      - 8080:8080
-      - 8085:8085
 volumes:
   data1-1:
   data1-2:
