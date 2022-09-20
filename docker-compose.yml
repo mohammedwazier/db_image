@@ -107,20 +107,6 @@ services:
     volumes:
       - data2-1:/data1
       - data2-2:/data2
-
-  # minio3:
-  #   <<: *minio-common
-  #   hostname: minio3
-  #   volumes:
-  #     - data3-1:/data1
-  #     - data3-2:/data2
-
-  # minio4:
-  #   <<: *minio-common
-  #   hostname: minio4
-  #   volumes:
-  #     - data4-1:/data1
-  #     - data4-2:/data2
   nginx:
     image: nginx:1.22.0-alpine
     hostname: nginx
@@ -144,42 +130,14 @@ services:
       - minio2
       - portainer
 
-  # mailserver:
-  #   image: docker.io/mailserver/docker-mailserver:latest
-  #   container_name: mailserver
-  #   # If the FQDN for your mail-server is only two labels (eg: example.com),
-  #   # you can assign this entirely to `hostname` and remove `domainname`.
-  #   hostname: mail
-  #   # domainname: localhost
-  #   env_file: mailserver.env
-  #   # More information about the mail-server ports:
-  #   # https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/
-  #   # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
-  #   ports:
-  #     - "25:25" # SMTP  (explicit TLS => STARTTLS)
-  #     - "143:143" # IMAP4 (explicit TLS => STARTTLS)
-  #     - "465:465" # ESMTP (implicit TLS)
-  #     - "587:587" # ESMTP (explicit TLS => STARTTLS)
-  #     - "993:993" # IMAP4 (implicit TLS)
-  #   volumes:
-  #     - ./docker-data/dms/mail-data/:/var/mail/
-  #     - ./docker-data/dms/mail-state/:/var/mail-state/
-  #     - ./docker-data/dms/mail-logs/:/var/log/mail/
-  #     - ./docker-data/dms/config/:/tmp/docker-mailserver/
-  #     - /etc/localtime:/etc/localtime:ro
-  #   restart: always
-  #   stop_grace_period: 1m
-  #   cap_add:
-  #     - NET_ADMIN
-  #   healthcheck:
-  #     test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
-  #     timeout: 3s
-  #     retries: 0
-
   mailslurper:
     image: marcopas/docker-mailslurper
     volumes:
       - ./mailslurper.json:/opt/mailslurper/config.json
+    ports:
+      - 2500:2500
+      - 8080:8080
+      - 8085:8085
 volumes:
   data1-1:
   data1-2:
