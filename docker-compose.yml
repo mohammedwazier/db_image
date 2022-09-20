@@ -178,10 +178,10 @@ services:
 
   core:
     image: adaline/dockermail-core
-    ports:
-      - "25:25"
-      - "143:143"
-      - "587:587"
+    # ports:
+    #   - "25:25"
+    #   - "143:143"
+    #   - "587:587"
     volumes:
       - ./opt/dockermail/settings:/mail_settings
       - ./opt/dockermail/mail:/vmail
