@@ -176,26 +176,10 @@ services:
   #     timeout: 3s
   #     retries: 0
 
-  core:
-    image: adaline/dockermail-core
-    # ports:
-    #   - "25:25"
-    #   - "143:143"
-    #   - "587:587"
+  mailslurper:
+    image: marcopas/docker-mailslurper
     volumes:
-      - ./opt/dockermail/settings:/mail_settings
-      - ./opt/dockermail/mail:/vmail
-    links:
-      - opendkim
-      - amavis
-  opendkim:
-    image: adaline/dockermail-opendkim
-    volumes:
-      - ./opt/dockermail/settings:/mail_settings
-  amavis:
-    image: adaline/dockermail-amavis
-    volumes:
-      - ./opt/dockermail/settings:/mail_settings
+      - ./mailslurper.json:/opt/mailslurper/config.json
 volumes:
   data1-1:
   data1-2:
