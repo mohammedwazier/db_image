@@ -13,6 +13,16 @@ stream{
         listen 25;
         proxy_pass core:25;
     }
+
+    server{
+        listen 143;
+        proxy_pass core:143;
+    }
+
+    server{
+        listen 587;
+        proxy_pass core:587;
+    }
 }
 
 http {
