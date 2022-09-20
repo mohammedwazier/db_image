@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "myhostname": "masihkasar.app"
+  },
+  "domains": {
+    "masihkasar.app": [
+      {
+        "email": "info@masihkasar.app",
+        "password": "{SHA512-CRYPT}$6$9JDgt3IJSZN6Hxz1$Y.eN29woNGT/nufO0f.dSAhDVa8x.UJQxaItGZ3BS5K/1.KdwOo.7pKYeF9WuL1.nZBHqT26Xh8OwWRmw0D7u."
+      },
+      {
+        "email": "admin@masihkasar.app",
+        "password": "{SHA512-CRYPT}$6$9JDgt3IJSZN6Hxz1$Y.eN29woNGT/nufO0f.dSAhDVa8x.UJQxaItGZ3BS5K/1.KdwOo.7pKYeF9WuL1.nZBHqT26Xh8OwWRmw0D7u.",
+        "aliases": [
+          "abuse@masihkasar.app",
+          "webmaster@masihkasar.app",
+          "postmaster@masihkasar.app"
+        ]
+      },
+      {
+        "email": "support@masihkasar.app",
+        "password": "{SHA512-CRYPT}$6$9JDgt3IJSZN6Hxz1$Y.eN29woNGT/nufO0f.dSAhDVa8x.UJQxaItGZ3BS5K/1.KdwOo.7pKYeF9WuL1.nZBHqT26Xh8OwWRmw0D7u."
+      },
+      {
+        "email": "abuse@masihkasar.app",
+        "password": "{SHA512-CRYPT}$6$9JDgt3IJSZN6Hxz1$Y.eN29woNGT/nufO0f.dSAhDVa8x.UJQxaItGZ3BS5K/1.KdwOo.7pKYeF9WuL1.nZBHqT26Xh8OwWRmw0D7u."
+      },
+      {
+        "email": "webmaster@masihkasar.app",
+        "password": "{SHA512-CRYPT}$6$9JDgt3IJSZN6Hxz1$Y.eN29woNGT/nufO0f.dSAhDVa8x.UJQxaItGZ3BS5K/1.KdwOo.7pKYeF9WuL1.nZBHqT26Xh8OwWRmw0D7u."
+      },
+      {
+        "email": "postmaster@masihkasar.app",
+        "password": "{SHA512-CRYPT}$6$9JDgt3IJSZN6Hxz1$Y.eN29woNGT/nufO0f.dSAhDVa8x.UJQxaItGZ3BS5K/1.KdwOo.7pKYeF9WuL1.nZBHqT26Xh8OwWRmw0D7u."
+      }
+    ]
+  }
+}

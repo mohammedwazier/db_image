@@ -3,5 +3,5 @@ opt/dockermail/mail/*
 !opt/dockermail/mail/.gitkeep
 opt/dockermail/settings/*
 !opt/dockermail/settings/.gitkeep
-opt/dockermail/settings/config.json
+!opt/dockermail/settings/config.json
 *.opendkim_key
