@@ -8,18 +8,6 @@ events {
     worker_connections  4096;
 }
 
-stream{
-    server{
-        listen 25;
-        proxy_pass mailslurper:2500;
-    }
-
-    server{
-        listen 587;
-        proxy_pass mailslurper:8085;
-    }
-}
-
 http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
@@ -171,33 +159,6 @@ http {
             proxy_set_header Connection "Upgrade";
             
             proxy_pass http://phpmyadmin;
-        }
-    }
-
-    server {
-        listen 80;
-        listen [::]:80;
-        server_name  mail.${NGINX_HOST} www.mail.${NGINX_HOST};
-
-        ignore_invalid_headers off;
-        client_max_body_size 0;
-        proxy_buffering off;
-        proxy_request_buffering off;
-        location / {
-            proxy_set_header Host $http_host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-
-            proxy_connect_timeout 999999;
-            # Default is HTTP/1, keepalive is only enabled in HTTP/1.1
-            proxy_http_version 1.1;
-            proxy_set_header Connection "";
-            chunked_transfer_encoding off;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "Upgrade";
-            
-            proxy_pass http://mailslurper:8080;
         }
     }
 }
