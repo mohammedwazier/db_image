@@ -132,12 +132,13 @@ services:
       - ./nginx/template:/etc/nginx/templates
     ports:
       - 80:80
-      - 443:443
       - 25:25
       - 143:143
-      - 465:465
       - 587:587
-      - 993:993
+    expose:
+      - 25:25
+      - 143:143
+      - 587:587
     links:
       - minio1
       - minio2
