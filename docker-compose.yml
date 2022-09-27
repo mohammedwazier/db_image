@@ -76,6 +76,8 @@ services:
       retries: 3
     ports:
       - 5432:5432
+    expose:
+      - 5432
   pgbouncer:
     image: docker.io/bitnami/pgbouncer:1
     ports:
