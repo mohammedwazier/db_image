@@ -74,6 +74,8 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+    ports:
+      - 5432:5432
   pgbouncer:
     image: docker.io/bitnami/pgbouncer:1
     ports:
