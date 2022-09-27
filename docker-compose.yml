@@ -60,7 +60,7 @@ services:
 
   timescaledb:
     hostname: timescaledb
-    image: timescale/timescaledb-ha:pg14-latest
+    image: timescale/timescaledb:pg14-latest
     restart: always
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
