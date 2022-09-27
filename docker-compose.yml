@@ -85,7 +85,7 @@ services:
     environment:
       - POSTGRESQL_HOST=timescaledb
       - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRESQL_DATABASE=${POSTGRES_DB}
+      # - POSTGRESQL_DATABASE=${POSTGRES_DB}
 
   portainer:
     image: portainer/portainer-ce:latest
