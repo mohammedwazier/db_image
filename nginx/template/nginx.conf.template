@@ -8,6 +8,42 @@ events {
     worker_connections  4096;
 }
 
+stream {
+    server {
+        listen 3306;
+        listen [::]:3306;
+        server_name  mysql.${NGINX_HOST} www.mysql.${NGINX_HOST};
+
+        allow all;
+
+        proxy_connect_timeout 60s;
+        proxy_socket_keepalive on;
+        proxy_pass mysql_service:3306;
+    }
+    server {
+        listen 5432;
+        listen [::]:5432;
+        server_name  postgres.${NGINX_HOST} www.postgres.${NGINX_HOST};
+
+        allow all;
+
+        proxy_connect_timeout 60s;
+        proxy_socket_keepalive on;
+        proxy_pass timescaledb:5432;
+    }
+    server {
+        listen 6379;
+        listen [::]:6379;
+        server_name  redis.${NGINX_HOST} www.redis.${NGINX_HOST};
+
+        allow all;
+
+        proxy_connect_timeout 60s;
+        proxy_socket_keepalive on;
+        proxy_pass redis_db_service:6379;
+    }
+}
+
 http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
@@ -48,34 +84,6 @@ http {
     #         proxy_pass http://portainer:9000;
     #     }
     # }
-
-    server {
-        listen 3306;
-        listen [::]:3306;
-        server_name  mysql.${NGINX_HOST} www.mysql.${NGINX_HOST};
-
-        proxy_connect_timeout 60s;
-        proxy_socket_keepalive on;
-        proxy_pass mysql_service:3306;
-    }
-    server {
-        listen 5432;
-        listen [::]:5432;
-        server_name  postgres.${NGINX_HOST} www.postgres.${NGINX_HOST};
-
-        proxy_connect_timeout 60s;
-        proxy_socket_keepalive on;
-        proxy_pass timescaledb:5432;
-    }
-    server {
-        listen 6379;
-        listen [::]:6379;
-        server_name  redis.${NGINX_HOST} www.redis.${NGINX_HOST};
-
-        proxy_connect_timeout 60s;
-        proxy_socket_keepalive on;
-        proxy_pass redis_db_service:6379;
-    }
 
     server {
         listen 80;
