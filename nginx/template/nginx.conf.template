@@ -10,8 +10,7 @@ events {
 
 stream {
     server {
-        listen 3306;
-        listen [::]:3306;
+        listen 3306 so_keepalive=on;
 
         allow all;
 
@@ -20,8 +19,7 @@ stream {
         proxy_pass mysql_service:3306;
     }
     server {
-        listen 5432;
-        listen [::]:5432;
+        listen 5432 so_keepalive=on;
 
         allow all;
 
@@ -30,8 +28,7 @@ stream {
         proxy_pass timescaledb:5432;
     }
     server {
-        listen 6379;
-        listen [::]:6379;
+        listen 6379 so_keepalive=on;
 
         allow all;
 
