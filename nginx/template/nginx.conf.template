@@ -12,7 +12,6 @@ stream {
     server {
         listen 3306;
         listen [::]:3306;
-        server_name  mysql.${NGINX_HOST} www.mysql.${NGINX_HOST};
 
         allow all;
 
@@ -23,7 +22,6 @@ stream {
     server {
         listen 5432;
         listen [::]:5432;
-        server_name  postgres.${NGINX_HOST} www.postgres.${NGINX_HOST};
 
         allow all;
 
@@ -34,7 +32,6 @@ stream {
     server {
         listen 6379;
         listen [::]:6379;
-        server_name  redis.${NGINX_HOST} www.redis.${NGINX_HOST};
 
         allow all;
 
