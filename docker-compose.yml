@@ -95,15 +95,20 @@ services:
       - ./nginx/template:/etc/nginx/templates
     ports:
       - 80:80
-      - 25:25
-      - 143:143
-      - 587:587
+      - 443:443
+      # - 25:25
+      # - 143:143
+      # - 587:587
     links:
-      - portainer
+      # - portainer
       - phpmyadmin
+      - timescaledb
+      - redis_db_service
     depends_on:
-      - portainer
+      # - portainer
       - phpmyadmin
+      - timescaledb
+      - redis_db_service
 volumes:
   portainer-data:
   mysql:
