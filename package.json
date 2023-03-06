@@ -1,0 +1,10 @@
+{
+  "name": "all-database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mohammedwazier/db_image.git",
+  "license": "MIT",
+  "scripts": {
+    "docker-compose-entrypoint": "ssh-keyscan -H wetty-ssh >> ~/.ssh/known_hosts; yarn start"
+  }
+}

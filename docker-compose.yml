@@ -16,7 +16,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE_DEFAULT}
       - MYSQL_ROOT_HOST=%
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping"]
+      test: [ "CMD-SHELL", "mysqladmin ping" ]
       interval: 10s
       timeout: 2s
       retries: 10
@@ -47,7 +47,7 @@ services:
   timescaledb:
     hostname: timescaledb
     image: timescale/timescaledb-ha:pg14-latest
-    restart: always
+    # restart: always
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -56,7 +56,11 @@ services:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"]
+      test:
+        [
+          "CMD-SHELL",
+          "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"
+        ]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -103,13 +107,13 @@ services:
     links:
       # - portainer
       - phpmyadmin
-      - timescaledb
-      - redis_db_service
+      # - timescaledb
+      # - redis_db_service
     depends_on:
       # - portainer
       - phpmyadmin
-      - timescaledb
-      - redis_db_service
+      # - timescaledb
+      # - redis_db_service
 volumes:
   portainer-data:
   mysql:
