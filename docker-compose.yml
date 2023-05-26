@@ -42,7 +42,7 @@ services:
       PMA_HOST: mysql_service
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
-    restart: always
+    # restart: always
 
   redis_db_service:
     image: redis
@@ -95,8 +95,11 @@ services:
     security_opt:
       - no-new-privileges:true
     ports:
-      - 9443:9443
-      - 9000:9000
+      - "9443:9443"
+      - "9000:9000"
+    expose:
+      - 9000
+      - 9443
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -105,7 +108,7 @@ services:
   nginx:
     image: nginx:1.22.0-alpine
     hostname: nginx
-    restart: unless-stopped
+    # restart: unless-stopped
     environment:
       - NGINX_HOST=${MAIN_HOST}
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
