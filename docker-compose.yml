@@ -2,9 +2,10 @@ version: "3.7"
 
 services:
   mysql_service:
-    image: mysql:5.7
+    image: mysql:latest
     hostname: mysql_service
     restart: always
+    # platform: linux/arm64/v8
     volumes:
       - mysql:/var/lib/mysql
     ports:
@@ -20,6 +21,15 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+  mssql:
+    platform: linux/amd64
+    # image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - MSSQL_SA_PASSWORD=Mohammed21!
+      - ACCEPT_EULA=1
+    ports:
+      - "1433:1433"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
