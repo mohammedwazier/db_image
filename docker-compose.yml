@@ -94,6 +94,8 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+    ports:
+      - 9443:9443
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -115,7 +117,7 @@ services:
       # - 143:143
       # - 587:587
     links:
-      # - portainer
+      - portainer
       - phpmyadmin
       # - timescaledb
       # - redis_db_service
