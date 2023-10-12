@@ -87,6 +87,18 @@ services:
       - POSTGRESQL_HOST=timescaledb
       - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
       # - POSTGRESQL_DATABASE=${POSTGRES_DB}
+  oracle:
+    image: gvenzl/oracle-free
+    restart: always
+    ports:
+      - 1521:1521
+    environment:
+      - ORACLE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    options: >-
+      --health-cmd healthcheck.sh
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 10
 
   portainer:
     image: portainer/portainer-ce:latest
