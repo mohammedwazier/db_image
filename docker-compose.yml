@@ -23,8 +23,8 @@ services:
       retries: 10
   mssql:
     platform: linux/amd64
-    # image: mcr.microsoft.com/mssql/server:2022-latest
-    image: mcr.microsoft.com/azure-sql-edge
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    #image: mcr.microsoft.com/azure-sql-edge
     environment:
       - MSSQL_SA_PASSWORD=Mohammed21!
       - ACCEPT_EULA=1
