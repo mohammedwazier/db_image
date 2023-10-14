@@ -92,8 +92,12 @@ services:
     restart: always
     ports:
       - 1521:1521
-    environment:
-      - ORACLE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    env:
+      ORACLE_RANDOM_PASSWORD: true
+      APP_USER: root
+      APP_USER_PASSWORD: Mohammed21!
+    # environment:
+    #   - ORACLE_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
   portainer:
     image: portainer/portainer-ce:latest
