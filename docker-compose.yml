@@ -92,7 +92,7 @@ services:
     restart: always
     ports:
       - 1521:1521
-    env:
+    # env:
       # ORACLE_RANDOM_PASSWORD: true
       # APP_USER: my_user
       # APP_USER_PASSWORD: password_i_should_change
