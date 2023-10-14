@@ -93,9 +93,13 @@ services:
     ports:
       - 1521:1521
     env:
-      ORACLE_RANDOM_PASSWORD: true
-      APP_USER: masihkasar
-      APP_USER_PASSWORD: testing_oracle
+      # ORACLE_RANDOM_PASSWORD: true
+      # APP_USER: my_user
+      # APP_USER_PASSWORD: password_i_should_change
+    environment:
+      - ORACLE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - APP_USER=masihkasar
+      - APP_USER_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
   portainer:
     image: portainer/portainer-ce:latest
