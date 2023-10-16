@@ -133,16 +133,16 @@ services:
       # - 25:25
       # - 143:143
       # - 587:587
-    links:
-      - portainer
-      - phpmyadmin
-      # - timescaledb
-      # - redis_db_service
-    depends_on:
-      # - portainer
-      - phpmyadmin
-      # - timescaledb
-      # - redis_db_service
+    # links:
+    #   - portainer
+    #   # - phpmyadmin
+    #   # - timescaledb
+    #   # - redis_db_service
+    # depends_on:
+    #   # - portainer
+    #   # - phpmyadmin
+    #   # - timescaledb
+    #   # - redis_db_service
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
