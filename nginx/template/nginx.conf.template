@@ -52,7 +52,7 @@ http {
         server_name  mysql.${NGINX_HOST} www.mysql.${NGINX_HOST};
 
         location / {
-            proxy_pass tcp://mysql;
+            proxy_pass mysql_service:3306;
         }
     }
 
