@@ -47,15 +47,6 @@ http {
         }
     }
 
-    server {
-        listen 80;
-        server_name  mysql.${NGINX_HOST} www.mysql.${NGINX_HOST};
-
-        location / {
-            proxy_pass mysql_service:3306;
-        }
-    }
-
     # server {
     #     listen 80;
     #     listen [::]:80;
