@@ -14,7 +14,7 @@ stream {
     }
     
     server {
-        listen 3306 so_keepalive=on;
+        listen 3306;
 
         proxy_pass mysql;
     }
