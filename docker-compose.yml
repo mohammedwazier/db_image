@@ -139,7 +139,9 @@ services:
     #   # - phpmyadmin
     #   # - timescaledb
     #   # - redis_db_service
-    # depends_on:
+    depends_on:
+      - portainer
+      - mysql_service
     #   # - portainer
     #   # - phpmyadmin
     #   # - timescaledb
