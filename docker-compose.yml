@@ -8,10 +8,10 @@ services:
     # platform: linux/arm64/v8
     volumes:
       - mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
-    expose:
-      - 3306
+    # ports:
+    #   - 3306:3306
+    # expose:
+    #   - 3306
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE_DEFAULT}
@@ -133,8 +133,9 @@ services:
       # - 25:25
       # - 143:143
       # - 587:587
-    # links:
-    #   - portainer
+    links:
+      - portainer
+      - mysql_service
     #   # - phpmyadmin
     #   # - timescaledb
     #   # - redis_db_service
