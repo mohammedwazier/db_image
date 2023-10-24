@@ -129,6 +129,9 @@ services:
     volumes:
         - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
         - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=${MYSQL_ROOT_PASSWORD}
     networks:
         - rabbitmq_net
 
@@ -192,7 +195,7 @@ services:
       - 5601:5601
     depends_on:
       - elasticsearch
-      
+
 networks:
   rabbitmq_net:
     driver: bridge
