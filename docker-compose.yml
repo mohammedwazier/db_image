@@ -198,7 +198,7 @@ services:
   mongodb:
     image: mongo:6-jammy
     ports:
-      - '27018:27017'
+      - '27039:27017'
     volumes:
       - dbdata6:/data/db
     environment:
@@ -215,6 +215,8 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=root
       - ME_CONFIG_MONGODB_ADMINPASSWORD=${MYSQL_ROOT_PASSWORD} 
       - ME_CONFIG_MONGODB_URL=mongodb://root:${MYSQL_ROOT_PASSWORD}@mongodb:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=masihkasar
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
 networks:
   rabbitmq_net:
