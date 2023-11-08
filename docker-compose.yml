@@ -221,7 +221,7 @@ services:
     volumes:
       - ./ngrok.yml:/home/ngrok/.ngrok2/ngrok.yml
     ports:
-      - "5432:5432"
+      - "5431:5432"
     command: ["ngrok", "tcp", "timescaledb:5432"]
 
 networks:
