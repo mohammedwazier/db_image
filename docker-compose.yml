@@ -212,10 +212,17 @@ services:
       - 8081:8081
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MYSQL_ROOT_PASSWORD} 
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MYSQL_ROOT_PASSWORD}
       - ME_CONFIG_MONGODB_URL=mongodb://root:${MYSQL_ROOT_PASSWORD}@mongodb:27017/
       - ME_CONFIG_BASICAUTH_USERNAME=masihkasar
       - ME_CONFIG_BASICAUTH_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  ngrok:
+    image: wernight/ngrok
+    volumes:
+      - ./ngrok.yml:/home/ngrok/.ngrok2/ngrok.yml
+    ports:
+      - "5432:5432"
+    command: ["ngrok", "tcp", "timescaledb:5432"]
 
 networks:
   rabbitmq_net:

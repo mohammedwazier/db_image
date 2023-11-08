@@ -5,3 +5,4 @@ opt/dockermail/settings/*
 !opt/dockermail/settings/.gitkeep
 !opt/dockermail/settings/config.json
 *.opendkim_key
+ngrok.yml
