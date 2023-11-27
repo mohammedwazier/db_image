@@ -223,6 +223,16 @@ services:
     ports:
       - "5431:5432"
     command: ["ngrok", "tcp", "timescaledb:5432"]
+  db:
+    image: 'jc21/mariadb-aria:latest'
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm'
+    volumes:
+      - mariadb:/var/lib/mysql
 
 networks:
   rabbitmq_net:
@@ -234,5 +244,7 @@ volumes:
   elasticsearch-data:
     driver: local
   dbdata6:
+    driver: local
+  mariadb:
     driver: local
 
