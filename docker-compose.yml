@@ -30,7 +30,7 @@ services:
       - MSSQL_SA_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - ACCEPT_EULA=1
     ports:
-      - "1433:1433"
+      - "21903:1433"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
