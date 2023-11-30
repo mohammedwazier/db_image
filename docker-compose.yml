@@ -17,7 +17,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE_DEFAULT}
       - MYSQL_ROOT_HOST=%
     healthcheck:
-      test: [ "CMD-SHELL", "mysqladmin ping" ]
+      test: ["CMD-SHELL", "mysqladmin ping"]
       interval: 10s
       timeout: 2s
       retries: 10
@@ -25,6 +25,8 @@ services:
     platform: linux/amd64
     image: mcr.microsoft.com/mssql/server:2022-latest
     #image: mcr.microsoft.com/azure-sql-edge
+    volumes:
+      - mssql:/sql_data
     restart: always
     environment:
       - MSSQL_SA_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -67,11 +69,7 @@ services:
       - /developer/postgresql_data:/var/lib/postgresql/data:z
       - /developer/db_backups:/db_backups:z
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"
-        ]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d ${POSTGRES_DB}'"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -94,9 +92,9 @@ services:
     ports:
       - 1521:1521
     # env:
-      # ORACLE_RANDOM_PASSWORD: true
-      # APP_USER: my_user
-      # APP_USER_PASSWORD: password_i_should_change
+    # ORACLE_RANDOM_PASSWORD: true
+    # APP_USER: my_user
+    # APP_USER_PASSWORD: password_i_should_change
     environment:
       - ORACLE_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - APP_USER=masihkasar
@@ -121,18 +119,18 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq-local'
+    container_name: "rabbitmq-local"
     ports:
-        - 5672:5672
-        - 15672:15672
+      - 5672:5672
+      - 15672:15672
     volumes:
-        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=${MYSQL_ROOT_PASSWORD}
     networks:
-        - rabbitmq_net
+      - rabbitmq_net
 
   nginx:
     image: nginx:1.22.0-alpine
@@ -197,7 +195,7 @@ services:
   mongodb:
     image: mongo:6-jammy
     ports:
-      - '27039:27017'
+      - "27039:27017"
     volumes:
       - dbdata6:/data/db
     environment:
@@ -224,13 +222,13 @@ services:
       - "5431:5432"
     command: ["ngrok", "tcp", "timescaledb:5432"]
   db:
-    image: 'jc21/mariadb-aria:latest'
+    image: "jc21/mariadb-aria:latest"
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: 'npm'
-      MYSQL_DATABASE: 'npm'
-      MYSQL_USER: 'npm'
-      MYSQL_PASSWORD: 'npm'
+      MYSQL_ROOT_PASSWORD: "npm"
+      MYSQL_DATABASE: "npm"
+      MYSQL_USER: "npm"
+      MYSQL_PASSWORD: "npm"
     volumes:
       - mariadb:/var/lib/mysql
 
@@ -241,10 +239,11 @@ networks:
 volumes:
   portainer-data:
   mysql:
+  mssql:
+    driver: local
   elasticsearch-data:
     driver: local
   dbdata6:
     driver: local
   mariadb:
     driver: local
-
