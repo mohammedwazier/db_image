@@ -57,6 +57,17 @@ services:
       - 6377:6379
     container_name: redis_db_service
 
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5555:5432
+    volumes:
+      - /developer/postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=cerberus-ags
+      - POSTGRES_USER=masihkasar
+
   timescaledb:
     hostname: timescaledb
     image: timescale/timescaledb-ha:pg14-latest
