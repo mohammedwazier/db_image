@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   mysql_service:
     image: mysql:latest
