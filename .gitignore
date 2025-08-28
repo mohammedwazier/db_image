@@ -6,3 +6,4 @@ opt/dockermail/settings/*
 !opt/dockermail/settings/config.json
 *.opendkim_key
 ngrok.yml
+local-files
